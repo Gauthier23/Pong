@@ -49,16 +49,17 @@ class PongGame(tk.Tk):
         self.canvas.focus_set()
         
         ###---Déplacement balle---###
-        self.alpha = random.randint(20,160)
-        self.speed = 5
-        self.y_speed = -cos(self.alpha)*self.speed
-        self.x_speed = sqrt(self.speed**2-self.y_speed)
+        self.initialise()
+        # self.alpha = random.randint(20,160)
+        # self.speed = 5
+        # self.y_speed = -cos(self.alpha)*self.speed
+        # self.x_speed = sqrt(self.speed**2-self.y_speed)
         
         
         
         
         
-        self.etat = "actif"
+        # self.etat = "actif"
         
         #self.HEIGHT/2self.WIDTH
         #width = 30, height = 80,
@@ -82,10 +83,13 @@ class PongGame(tk.Tk):
         self.numberofplayer = 1
         self.canvas.bind_all("<KeyPress-w>", self.move_up_right)        
         self.canvas.bind_all("<KeyPress-s>", self.move_down_right)
+        self.bot()
         self.play()
         
     def twoplayers(self):
         self.numberofplayer = 2
+        self.canvas.bind_all("<KeyPress-w>", self.move_up_right)        
+        self.canvas.bind_all("<KeyPress-s>", self.move_down_right)
         self.canvas.bind_all("<KeyPress-Up>", self.move_up_left)        
         self.canvas.bind_all("<KeyPress-Down>", self.move_down_left)
         self.play()
@@ -126,6 +130,20 @@ class PongGame(tk.Tk):
         y = self.canvas.coords(self.paddle_right)[1]
         if y < self.HEIGHT - 80:
             self.canvas.move(self.paddle_right, 0, +10)
+            
+    def bot(self):
+            #if self.numberofplayer == 1:    
+            #botposition = self.canvas.coords(self.paddle_left)[1] - 45
+            pos = self.canvas.coords(self.ball)
+            botposition = self.canvas.coords(self.paddle_left)
+            
+            if botposition[1] + 30 > pos[1]:
+                self.canvas.move(self.paddle_left, 0, -7)
+                    
+            if botposition[1] + 60 < pos[1]:
+                self.canvas.move(self.paddle_left, 0, +7)
+                
+            self.after(5, self.bot())
 
 
     def play(self):
@@ -178,18 +196,18 @@ class PongGame(tk.Tk):
                 self.initialise()
                 
             #if self.numberofplayer == 1:
-            if self.numberofplayer == 1:    
-            #botposition = self.canvas.coords(self.paddle_left)[1] - 45
-                botposition = self.canvas.coords(self.paddle_left)
+            # if self.numberofplayer == 1:    
+            # #botposition = self.canvas.coords(self.paddle_left)[1] - 45
+            #     botposition = self.canvas.coords(self.paddle_left)
             
-            #if 0 < botposition[1] < self.HEIGHT - 80 and 1 == 2:
-                #print(botposition[1])
+            # #if 0 < botposition[1] < self.HEIGHT - 80 and 1 == 2:
+            #     #print(botposition[1])
                 
-                if botposition[1] + 30 > pos[1]:
-                    self.canvas.move(self.paddle_left, 0, -7)
+            #     if botposition[1] + 30 > pos[1]:
+            #         self.canvas.move(self.paddle_left, 0, -7)
                     
-                if botposition[1] + 60 < pos[1]:
-                    self.canvas.move(self.paddle_left, 0, +7)
+            #     if botposition[1] + 60 < pos[1]:
+            #         self.canvas.move(self.paddle_left, 0, +7)
                
             
             #self.canvas.coords(self.paddle_left, 10, pos[1]-40, 20, pos[1] + 50)
